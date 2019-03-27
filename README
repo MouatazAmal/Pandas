@@ -1,0 +1,7 @@
+TODO
+
+On suppose que y'a pas de valeurs nulle, toutes les colonnes, string int float.
+
+Pour exécuter : java -cp target/Pandas-1.0-SNAPSHOT.jar Project.Devops.Sec.App
+Pour constuire et compiler le projet : mvn package
+
