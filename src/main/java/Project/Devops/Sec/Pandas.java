@@ -3,16 +3,38 @@ package Project.Devops.Sec;
 import java.lang.String;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 
-public abstract class Pandas {
+public class Pandas {
 
     private ArrayList<String[]> dataFrames;
+    private CsvParser csvParser;
     private String[] columns;
     private HashMap<String,String> columnsType;
     private int nbColumns ;
     private int nbLines;
 
 
+    public Pandas(ArrayList<String[]> dataFrames) {
+        this.dataFrames = dataFrames;
+        this.csvParser = null;
+        this.columns = this.dataFrames.get(0);
+        this.columnsType = new HashMap<>();
+        this.nbLines = this.dataFrames.size();
+        this.nbColumns = this.columns.length;
+        this.typeInference();
+    }
+
+    public Pandas(String filname) {
+        this.csvParser = new CsvParser(filname);
+        this.dataFrames = this.csvParser.getRows();
+        this.columns = this.csvParser.getColumns();
+        this.columnsType = new HashMap<>();
+        this.nbColumns = this.csvParser.getNbColumns();
+        this.nbLines = this.csvParser.getNbLines();
+        this.typeInference();
+
+    }
 
     private void typeInference(){
         for (int i =0;i<this.nbColumns;i++){
@@ -34,7 +56,7 @@ public abstract class Pandas {
     }
 
     public String getColumnLabel(int index){
-       return this.columns[index];
+        return this.columns[index];
     }
 
     public int getLabelIndex(String label){
@@ -42,7 +64,7 @@ public abstract class Pandas {
             for (int i=0;i<this.nbColumns;i++){
                 if (label.equals(this.columns[i])) return i;
             }
-            throw new Exception("Label not found");
+            throw new NoSuchElementException();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -50,9 +72,9 @@ public abstract class Pandas {
     }
 
     public String[] getColumn(int columnIndex){
-        String[] column = new String[]{};
+        String[] column = new String[this.nbLines];
         for (int i = 0;i<this.nbLines;i++){
-            column[i] = this.dataFrames.get(i)[columnIndex];
+            column[i] =  this.dataFrames.get(i)[columnIndex];
         }
         return column;
     }
@@ -79,11 +101,12 @@ public abstract class Pandas {
             for (int j=0; j<this.nbColumns;j++){
                 System.out.print(this.dataFrames.get(i)[j] + ",");
             }
+            System.out.println();
         }
     }
 
     public void printBottomTable(){
-        int nbStartingIndexOfPrintedLines =this.nbLines - this.nbColumns/10;
+        int nbStartingIndexOfPrintedLines = this.nbLines - this.nbColumns/10;
         if (nbStartingIndexOfPrintedLines < 1 ) nbStartingIndexOfPrintedLines = 1;
 
         for (int i = nbStartingIndexOfPrintedLines;i<this.nbLines;i++){
@@ -91,6 +114,8 @@ public abstract class Pandas {
             for (int j=0; j<this.nbColumns;j++){
                 System.out.print(this.dataFrames.get(i)[j] + ",");
             }
+            System.out.println();
+
         }
     }
 
@@ -109,7 +134,7 @@ public abstract class Pandas {
         if (startingIndex < 0) startingIndex = 0;
         if (lastIndex > this.nbLines) lastIndex = this.nbLines;
 
-        for (int i = startingIndex; i<=lastIndex;i++){
+        for (int i = startingIndex; i<lastIndex;i++){
             subSet.add(this.dataFrames.get(i));
         }
         return subSet;
@@ -136,10 +161,14 @@ public abstract class Pandas {
         return subSet;
     }
 
-    public float average (int index) throws Exception {
+    public float average (int index) {
 
-        if (index > this.nbLines && this.columnsType.get(this.getColumnLabel(index)).equals("String")){
-            throw new Exception("Column dont exist");
+        if ((index > this.nbLines || index < 0 ) || this.columnsType.get(this.getColumnLabel(index)).equals("String")){
+            try {
+                throw new Exception("Column dont exist ");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         float sum = 0;
@@ -149,7 +178,7 @@ public abstract class Pandas {
         return sum/(this.nbLines -1);
     }
 
-    public float average (String label) throws Exception{
+    public float average (String label){
         int index = this.getLabelIndex(label);
         return this.average(index);
     }
@@ -199,6 +228,23 @@ public abstract class Pandas {
     }
 
 
+    public ArrayList<String[]> getDataFrames() {
+        return dataFrames;
+    }
 
+    public String[] getColumns() {
+        return columns;
+    }
 
+    public HashMap<String, String> getColumnsType() {
+        return columnsType;
+    }
+
+    public int getNbColumns() {
+        return nbColumns;
+    }
+
+    public int getNbLines() {
+        return nbLines;
+    }
 }

@@ -62,7 +62,7 @@ public class CsvParser {
         return csvReader;
     }
 
-    public List<String[]> getRows() {
+    public ArrayList<String[]> getRows() {
         return rows;
     }
 
