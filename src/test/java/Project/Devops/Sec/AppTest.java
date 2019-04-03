@@ -12,7 +12,7 @@ import java.util.HashMap;
  * Unit test for simple App.
  */
 public class AppTest {
-    Pandas panda1 = new Pandas("C:\\Users\\IM2AG\\Desktop\\MASTER\\Semestre_8\\Devops\\Project\\rsc\\testFile10.csv");
+    Pandas panda1 = new Pandas("./rsc/testFile10.csv");
     Pandas panda2 = new Pandas(panda1.getDataFrames());
     String str = "Column 1,Column 2,Column 3,Column 4,Column 5,Column 6,Column 7,Column 8,Column 9,Column 10";
     String st1 = "Column 1,1,2,3,4,5,6,7,8,9,10";
