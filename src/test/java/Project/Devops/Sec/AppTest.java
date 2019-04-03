@@ -21,7 +21,7 @@ public class AppTest {
     @Test
     public final void readingColumnsTest() {
         String str = "Column 1,Column 2,Column 3,Column 4,Column 5,Column 6,Column 7,Column 8,Column 9,Column 10";
-        assertEquals(panda1.getColumns(),str.split(","));
+        assertEquals(panda1.getColumnsName(),str.split(","));
     }
 
     @Test
