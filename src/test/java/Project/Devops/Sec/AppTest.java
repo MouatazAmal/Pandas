@@ -17,11 +17,12 @@ public class AppTest {
     String str = "Column 1,Column 2,Column 3,Column 4,Column 5,Column 6,Column 7,Column 8,Column 9,Column 10";
     String st1 = "Column 1,1,2,3,4,5,6,7,8,9,10";
     String Column1 = "1,2,3,4,5,6,7,8,9,10";
+    CsvParser csvParser = new CsvParser("./rsc/testFile10.csv");
 
     @Test
     public final void readingColumnsTest() {
         String str = "Column 1,Column 2,Column 3,Column 4,Column 5,Column 6,Column 7,Column 8,Column 9,Column 10";
-        assertEquals(panda1.getColumns(),str.split(","));
+        assertEquals(panda1.getColumnsName(),str.split(","));
     }
 
     @Test
@@ -158,6 +159,75 @@ public class AppTest {
         float actualAverage = panda1.average("Column 1");
         assertEquals(actualAverage,expectedAverage,0.0002);
     }
+
+    @Test
+    public final void minTest(){
+        float expectedMin = (float) 1;
+        assertEquals(panda1.min(0),expectedMin,0.0002);
+        assertEquals(panda1.min("Column 1"),expectedMin,0.0002);
+    }
+    @Test
+    public final void minTest5(){
+        float expectedMin = (float) 1;
+        assertEquals(panda1.min("Column 1"),expectedMin,0.0002);
+    }
+
+    @Test(expected = java.lang.Exception.class)
+    public final void minTest2(){
+        float expectedMin = (float) 1;
+        assertEquals(panda1.min(-1),expectedMin,0.0002);
+
+    }
+
+    @Test(expected = java.lang.Exception.class)
+    public final void minTest3(){
+        float expectedMin = (float) 1;
+        assertEquals(panda1.min(100),expectedMin,0.0002);
+    }
+
+    @Test(expected = java.lang.Exception.class)
+    public final void minTest4(){
+        float expectedMin = (float) 1;
+        assertEquals(panda1.min("Not existing Column"),expectedMin,0.0002);
+    }
+
+
+    @Test
+    public final void maxTest(){
+        float expectedMax = (float) 10;
+        assertEquals(panda1.max(0),expectedMax,0.0002);
+    }
+
+    @Test
+    public final void maxTest2(){
+        float expectedMax = (float) 10;
+        assertEquals(panda1.max("Column 1"),expectedMax,0.0002);
+    }
+
+    @Test(expected = java.lang.Exception.class)
+    public final void maxTest3(){
+        float expectedMax = (float) 1;
+        assertEquals(panda1.max("Not existing Column"),expectedMax,0.0002);
+    }
+
+    @Test(expected = java.lang.Exception.class)
+    public final void maxTest4(){
+        float expectedMax = (float) 1;
+        assertEquals(panda1.max(100),expectedMax,0.0002);
+    }
+
+    @Test(expected = java.lang.Exception.class)
+    public final void maxTest5(){
+        float expectedMax = (float) 1;
+        assertEquals(panda1.max(-1),expectedMax,0.0002);
+    }
+
+
+    @Test
+    public final void csvParserGetFileName() {
+        assertEquals(csvParser.getFileName(),"./rsc/testFile10.csv");
+    }
+
 
     
 

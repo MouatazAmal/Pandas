@@ -9,7 +9,7 @@ public class Pandas {
 
     private ArrayList<String[]> dataFrames;
     private CsvParser csvParser;
-    private String[] columns;
+    private String[] columnsName;
     private HashMap<String,String> columnsType;
     private int nbColumns ;
     private int nbLines;
@@ -18,17 +18,17 @@ public class Pandas {
     public Pandas(ArrayList<String[]> dataFrames) {
         this.dataFrames = dataFrames;
         this.csvParser = null;
-        this.columns = this.dataFrames.get(0);
+        this.columnsName = this.dataFrames.get(0);
         this.columnsType = new HashMap<>();
         this.nbLines = this.dataFrames.size();
-        this.nbColumns = this.columns.length;
+        this.nbColumns = this.columnsName.length;
         this.typeInference();
     }
 
     public Pandas(String filname) {
         this.csvParser = new CsvParser(filname);
         this.dataFrames = this.csvParser.getRows();
-        this.columns = this.csvParser.getColumns();
+        this.columnsName = this.csvParser.getColumns();
         this.columnsType = new HashMap<>();
         this.nbColumns = this.csvParser.getNbColumns();
         this.nbLines = this.csvParser.getNbLines();
@@ -39,15 +39,15 @@ public class Pandas {
     private void typeInference(){
         for (int i =0;i<this.nbColumns;i++){
             if (this.dataFrames.get(1)[i].matches(".*[a-zA-Z]+.*")){
-                this.columnsType.put(this.columns[i],"String");
+                this.columnsType.put(this.columnsName[i],"String");
             } else if (this.dataFrames.get(1)[i].contains(".")){
-                this.columnsType.put(this.columns[i],"float");
-            } else this.columnsType.put(this.columns[i],"int");
+                this.columnsType.put(this.columnsName[i],"float");
+            } else this.columnsType.put(this.columnsName[i],"int");
         }
     }
 
     public boolean containsLabel(String label){
-        for (String lb : this.columns){
+        for (String lb : this.columnsName){
             if (lb.equals(label)){
                 return true;
             }
@@ -56,13 +56,13 @@ public class Pandas {
     }
 
     public String getColumnLabel(int index){
-        return this.columns[index];
+        return this.columnsName[index];
     }
 
     public int getLabelIndex(String label){
         try {
             for (int i=0;i<this.nbColumns;i++){
-                if (label.equals(this.columns[i])) return i;
+                if (label.equals(this.columnsName[i])) return i;
             }
             throw new NoSuchElementException();
         } catch (Exception e) {
@@ -94,7 +94,7 @@ public class Pandas {
 
     public void printTopTable(){
         int nbPrintedLines = this.nbLines/10;
-        if (nbPrintedLines<1) nbPrintedLines = 1;
+        if (nbPrintedLines<1) nbPrintedLines = this.nbLines;
 
         for (int i = 0;i<nbPrintedLines;i++){
             System.out.print(i +":");
@@ -106,8 +106,8 @@ public class Pandas {
     }
 
     public void printBottomTable(){
-        int nbStartingIndexOfPrintedLines = this.nbLines - this.nbColumns/10;
-        if (nbStartingIndexOfPrintedLines < 1 ) nbStartingIndexOfPrintedLines = 1;
+        int nbStartingIndexOfPrintedLines = this.nbLines - this.nbLines/10;
+        if (nbStartingIndexOfPrintedLines < 1 ) nbStartingIndexOfPrintedLines = this.nbLines;
 
         for (int i = nbStartingIndexOfPrintedLines;i<this.nbLines;i++){
             System.out.print(i +":");
@@ -183,32 +183,40 @@ public class Pandas {
         return this.average(index);
     }
 
-    public float min (int index) throws Exception{
+    public float min (int index) {
 
-        if (index > this.nbLines && this.columnsType.get(this.getColumnLabel(index)).equals("String")){
-            throw new Exception("Column dont exist");
-        }
-
-        float min = Float.parseFloat(this.dataFrames.get(1)[index]);
-
-        for (int i =2; i< this.nbLines; i++){
-            if (min > Float.parseFloat(this.dataFrames.get(i)[index])){
-                min = Float.parseFloat(this.dataFrames.get(i)[index]);
+        if (index > this.nbLines || this.columnsType.get(this.getColumnLabel(index)).equals("String")) {
+            try {
+                throw new Exception("Column dont exist");
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 
-        return min;
+            float min = Float.parseFloat(this.dataFrames.get(1)[index]);
+
+            for (int i = 2; i < this.nbLines; i++) {
+                if (min > Float.parseFloat(this.dataFrames.get(i)[index])) {
+                    min = Float.parseFloat(this.dataFrames.get(i)[index]);
+                }
+            }
+
+            return min;
     }
 
-    public float min (String label) throws Exception{
+    public float min (String label){
         int index = this.getLabelIndex(label);
         return this.min(index);
     }
 
-    public float max (int index) throws Exception{
+    public float max (int index) {
 
-        if (index > this.nbLines && this.columnsType.get(this.getColumnLabel(index)).equals("String")){
-            throw new Exception("Column dont exist");
+        if (index > this.nbLines || this.columnsType.get(this.getColumnLabel(index)).equals("String")){
+            try {
+                throw new Exception("Column dont exist");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         float max = Float.parseFloat(this.dataFrames.get(1)[index]);
@@ -222,7 +230,7 @@ public class Pandas {
         return max;
     }
 
-    public float max (String label) throws Exception{
+    public float max (String label){
         int index = this.getLabelIndex(label);
         return this.max(index);
     }
@@ -232,8 +240,8 @@ public class Pandas {
         return dataFrames;
     }
 
-    public String[] getColumns() {
-        return columns;
+    public String[] getColumnsName() {
+        return columnsName;
     }
 
     public HashMap<String, String> getColumnsType() {
@@ -247,4 +255,5 @@ public class Pandas {
     public int getNbLines() {
         return nbLines;
     }
+
 }

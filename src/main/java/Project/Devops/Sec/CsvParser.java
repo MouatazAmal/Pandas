@@ -24,25 +24,25 @@ public class CsvParser {
 
 
     //La lignes dénoté 0 est considéré comme la ligne spécifiant les colonnes.
-    public CsvParser(String fileName) {
+    public CsvParser(String fileName)  {
         // initializing the file
         this.fileName = fileName;
 
-        try {
             this.file = new File(this.fileName);
-            if (this.file.canRead()){
-                this.fileReader = new FileReader(file);
-                this.rows = new ArrayList<String[]>();
-                this.parseCsv();
-                this.columns = this.rows.get(0);
-                this.nbColumns = this.columns.length;
-                this.nbLines = this.rows.size();
+            try {
+                if (this.file.canRead()){
+                    this.fileReader = new FileReader(file);
+                    this.rows = new ArrayList<String[]>();
+                    this.parseCsv();
+                    this.columns = this.rows.get(0);
+                    this.nbColumns = this.columns.length;
+                    this.nbLines = this.rows.size();
+                }
+
+                else throw new IOException("File Not found or not have rights to read it");
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
     }
 
@@ -63,14 +63,6 @@ public class CsvParser {
         return fileName;
     }
 
-    public File getFile() {
-        return file;
-    }
-
-    public FileReader getFileReader() {
-        return fileReader;
-    }
-
     public ArrayList<String[]> getRows() {
         return rows;
     }
@@ -85,16 +77,6 @@ public class CsvParser {
 
     public int getNbLines() {
         return nbLines;
-    }
-
-    public void printDataFrame(){
-        for (String[] row : this.rows){
-            for (int i =0; i<row.length;i++) {
-                System.out.print(row[i]);
-            }
-            System.out.println();
-
-        }
     }
 
 
