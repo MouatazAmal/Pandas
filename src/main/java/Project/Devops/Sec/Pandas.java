@@ -161,6 +161,70 @@ public class Pandas {
         return subSet;
     }
 
+    public ArrayList<String[]> selectDataframe(String checkedValue, String label){
+        if (!this.containsLabel(label)){
+            try {
+                throw new Exception("Not found Label");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        ArrayList<String[]> subSet = new ArrayList<>();
+
+        for (String [] row : this.dataFrames){
+            if (row[this.getLabelIndex(label)].equals(checkedValue)){
+                subSet.add(row);
+            }
+        }
+        return subSet;
+    }
+
+    public ArrayList<String[]> selectDataframe(String checkedValue, int index){
+
+        return selectDataframe(checkedValue, this.getColumnLabel(index));
+    }
+
+    public ArrayList<String[]> selectDataframe(int testType, int checkedValue, String label){
+        if (!this.containsLabel(label) || this.columnsType.get(label).equals("String") || this.columnsType.get(label).equals("float") || testType < 0 || testType > 2){
+            try {
+                throw new Exception();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        ArrayList<String[]> subSet = new ArrayList<>();
+
+        for (int i = 1;i<this.dataFrames.size();i++){
+            int t = Integer.parseInt(this.dataFrames.get(i)[this.getLabelIndex(label)]);
+            if (this.personnalizedIs(testType,checkedValue,Integer.parseInt(this.dataFrames.get(i)[this.getLabelIndex(label)]))){
+                subSet.add(this.dataFrames.get(i));
+            }
+        }
+        return subSet;
+    }
+
+    public ArrayList<String[]> selectDataframe(int testType, float checkedValue, String label){
+        if (!this.containsLabel(label) || this.columnsType.get(label).equals("String") || this.columnsType.get(label).equals("int")){
+            try {
+                throw new Exception("Not found Label");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        ArrayList<String[]> subSet = new ArrayList<>();
+
+        for (int i = 1;i<this.dataFrames.size();i++){
+            if (this.personnalizedIs(testType,checkedValue,Float.parseFloat(this.dataFrames.get(i)[this.getLabelIndex(label)]))){
+                subSet.add(this.dataFrames.get(i));
+            }
+        }
+        return subSet;
+    }
+
+
+
+
+
     public float average (int index) {
 
         if ((index > this.nbLines || index < 0 ) || this.columnsType.get(this.getColumnLabel(index)).equals("String")){
@@ -255,5 +319,35 @@ public class Pandas {
     public int getNbLines() {
         return nbLines;
     }
+
+    public Boolean personnalizedIs(int testType, int x, int y){
+        switch (testType){
+            case 0 :
+                return x == y;
+            case 1 :
+                return y > x;
+            default:
+                return y < x ;
+
+        }
+    }
+
+    public Boolean personnalizedIs(int testType, float x, float y){
+        switch (testType){
+            case 0 :
+                return x == y;
+            case 1 :
+                return y > x;
+            default:
+                return y < x ;
+
+        }
+    }
+
+    public Boolean personnalizedIs( String x, String y){
+        return x.equals(y);
+    }
+
+
 
 }
