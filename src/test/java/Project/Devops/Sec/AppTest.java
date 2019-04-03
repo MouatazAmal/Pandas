@@ -142,9 +142,31 @@ public class AppTest {
 
     @Test(expected = java.lang.Exception.class)
     public final void averageTest2(){
-        float expectedAverage = (1+2+3+4+5+6+7+8+9+10)/10;
+        float expectedAverage = (float)(1+2+3+4+5+6+7+8+9+10)/10;
         assertEquals(panda1.average(-1),expectedAverage,0.0002);
     }
+
+    @Test(expected = java.lang.Exception.class)
+    public final void averageTest3(){
+        float expectedAverage = (float)(1+2+3+4+5+6+7+8+9+10)/10;
+        assertEquals(panda1.average(100),expectedAverage,0.0002);
+    }
+
+    @Test
+    public final void averageTest4(){
+        float expectedAverage = (float)(1+2+3+4+5+6+7+8+9+10)/10;
+        float actualAverage = panda1.average("Column 1");
+        assertEquals(actualAverage,expectedAverage,0.0002);
+    }
+
+    
+
+
+
+
+
+
+
 
 
 
