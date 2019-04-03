@@ -172,7 +172,7 @@ public class Pandas {
         }
 
         float sum = 0;
-        for (int i =1; i< this.nbLines;i++){
+        for (int i =1; i<this.nbLines;i++){
             sum = sum + Float.parseFloat(this.dataFrames.get(i)[index]);
         }
         return sum/(this.nbLines -1);
