@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Unit test for simple App.
@@ -17,6 +18,7 @@ public class AppTest {
     String str = "Column 1,Column 2,Column 3,Column 4,Column 5,Column 6,Column 7,Column 8,Column 9,Column 10";
     String st1 = "Column 1,1,2,3,4,5,6,7,8,9,10";
     String Column1 = "1,2,3,4,5,6,7,8,9,10";
+    CsvParser csvParser = new CsvParser("./rsc/testFile10.csv");
 
     @Test
     public final void readingColumnsTest() {
@@ -159,27 +161,198 @@ public class AppTest {
         assertEquals(actualAverage,expectedAverage,0.0002);
     }
 
-    
+    @Test
+    public final void minTest(){
+        float expectedMin = (float) 1;
+        assertEquals(panda1.min(0),expectedMin,0.0002);
+        assertEquals(panda1.min("Column 1"),expectedMin,0.0002);
+    }
+    @Test
+    public final void minTest5(){
+        float expectedMin = (float) 1;
+        assertEquals(panda1.min("Column 1"),expectedMin,0.0002);
+    }
+
+    @Test(expected = java.lang.Exception.class)
+    public final void minTest2(){
+        float expectedMin = (float) 1;
+        assertEquals(panda1.min(-1),expectedMin,0.0002);
+
+    }
+
+    @Test(expected = java.lang.Exception.class)
+    public final void minTest3(){
+        float expectedMin = (float) 1;
+        assertEquals(panda1.min(100),expectedMin,0.0002);
+    }
+
+    @Test(expected = java.lang.Exception.class)
+    public final void minTest4(){
+        float expectedMin = (float) 1;
+        assertEquals(panda1.min("Not existing Column"),expectedMin,0.0002);
+    }
 
 
+    @Test
+    public final void maxTest(){
+        float expectedMax = (float) 10;
+        assertEquals(panda1.max(0),expectedMax,0.0002);
+    }
+
+    @Test
+    public final void maxTest2(){
+        float expectedMax = (float) 10;
+        assertEquals(panda1.max("Column 1"),expectedMax,0.0002);
+    }
+
+    @Test(expected = java.lang.Exception.class)
+    public final void maxTest3(){
+        float expectedMax = (float) 1;
+        assertEquals(panda1.max("Not existing Column"),expectedMax,0.0002);
+    }
+
+    @Test(expected = java.lang.Exception.class)
+    public final void maxTest4(){
+        float expectedMax = (float) 1;
+        assertEquals(panda1.max(100),expectedMax,0.0002);
+    }
+
+    @Test(expected = java.lang.Exception.class)
+    public final void maxTest5(){
+        float expectedMax = (float) 1;
+        assertEquals(panda1.max(-1),expectedMax,0.0002);
+    }
 
 
+    @Test
+    public final void csvParserGetFileName() {
+        assertEquals(csvParser.getFileName(),"./rsc/testFile10.csv");
+    }
 
 
+    @Test
+    public final void personnalizedIs() {
 
 
+        assertTrue(panda1.personnalizedIs(0,1,1));
+        assertTrue(panda1.personnalizedIs(1,2,1));
+        assertTrue(panda1.personnalizedIs(2,1,2));
+
+        assertTrue(panda1.personnalizedIs(0,1f,1f));
+        assertTrue(panda1.personnalizedIs(1,2f,1f));
+        assertTrue(panda1.personnalizedIs(2,1f,2f));
+
+        assertTrue(panda1.personnalizedIs("Mouataz","Mouataz"));
 
 
+        assertFalse(panda1.personnalizedIs(0,1,2));
+        assertFalse(panda1.personnalizedIs(1,1,1));
+        assertFalse(panda1.personnalizedIs(2,1,1));
+
+        assertFalse(panda1.personnalizedIs(0,1f,2f));
+        assertFalse(panda1.personnalizedIs(1,1f,1f));
+        assertFalse(panda1.personnalizedIs(2,1f,1f));
+
+        assertFalse(panda1.personnalizedIs("Mouataz","Pas Mouataz"));
+
+    }
 
 
+    @Test
+    public void SelectionDataframe5() {
+        String [] expectedStr = "1,\"Eldon Base for stackable storage shelf\",Muhammed MacIntyre,3,-213.25,38.94,35,Nunavut,Storage & Organization,0.8".split(",");
+        ArrayList<String[]> expectedOutput = new ArrayList<>();
+        expectedOutput.add(expectedStr);
+
+        ArrayList<String[]> actualOutput = panda1.selectDataframe("Muhammed MacIntyre", "Column 3");
 
 
+        for (int j = 0; j<expectedOutput.size();j++){
+            for (int i = 0;i<expectedOutput.get(j).length; i++){
+                assertTrue(expectedOutput.get(j)[i].equals(actualOutput.get(j)[i]));
+            }
+        }
+
+    }
+
+    @Test (expected = java.lang.Exception.class)
+    public void SelectionDataFrame6() {
+        panda1.selectDataframe("Muhammed MacIntyre", "Not Existing Column");
+    }
 
 
+    @Test
+    public void SelectionDataframe7() {
+        String [] expectedStr = "1,\"Eldon Base for stackable storage shelf\",Muhammed MacIntyre,3,-213.25,38.94,35,Nunavut,Storage & Organization,0.8".split(",");
+        ArrayList<String[]> expectedOutput = new ArrayList<>();
+        expectedOutput.add(expectedStr);
+
+        ArrayList<String[]> actualOutput = panda1.selectDataframe("Muhammed MacIntyre", 2);
 
 
+        for (int j = 0; j<expectedOutput.size();j++){
+            for (int i = 0;i<expectedOutput.get(j).length; i++){
+                assertTrue(expectedOutput.get(j)[i].equals(actualOutput.get(j)[i]));
+            }
+        }
+
+    }
+
+    @Test
+    public void SelectionDataFrame8() {
+
+        ArrayList<String[]> expectedOutput = new ArrayList<>();
+        expectedOutput.add("1,\"Eldon Base for stackable storage shelf\",Muhammed MacIntyre,3,-213.25,38.94,35,Nunavut,Storage & Organization,0.8".split(","));
+        ArrayList<String[]> actualOutput = panda1.selectDataframe(0,1,"Column 1");
+
+        for (int j = 0; j<expectedOutput.size();j++){
+            for (int i = 0;i<expectedOutput.get(j).length; i++){
+                assertTrue(expectedOutput.get(j)[i].equals(actualOutput.get(j)[i]));
+            }
+        }
+        actualOutput = panda1.selectDataframe(2,2,"Column 1");
+
+        for (int j = 0; j<expectedOutput.size();j++){
+            for (int i = 0;i<expectedOutput.get(j).length; i++){
+                assertTrue(expectedOutput.get(j)[i].equals(actualOutput.get(j)[i]));
+            }
+        }
+
+        actualOutput = panda1.selectDataframe(1,9,"Column 1");
+        expectedOutput.remove(0);
+        expectedOutput.add("10,Xerox 198,Dorothy Badders,678,-226.36,4.98,8.33,Nunavut,Paper,0.38".split(","));
+
+        for (int j = 0; j<expectedOutput.size();j++){
+            for (int i = 0;i<expectedOutput.get(j).length; i++){
+                assertTrue(expectedOutput.get(j)[i].equals(actualOutput.get(j)[i]));
+            }
+        }
 
 
+    }
+
+    @Test (expected = java.lang.Exception.class)
+    public void SelectionDataFrame9() {
+        panda1.selectDataframe(0,500, "Not Existing Column");
+    }
+
+    @Test
+    public void SelectionDataFrame10() {
+
+        ArrayList<String[]> expectedOutput = new ArrayList<>();
+        expectedOutput.add("1,\"Eldon Base for stackable storage shelf\",Muhammed MacIntyre,3,-213.25,38.94,35,Nunavut,Storage & Organization,0.8".split(","));
+
+        ArrayList<String[]> actualOutput = panda1.selectDataframe(0,-213.25f,"Column 5");
+
+        for (int j = 0; j<expectedOutput.size();j++){
+            for (int i = 0;i<expectedOutput.get(j).length; i++){
+                assertTrue(expectedOutput.get(j)[i].equals(actualOutput.get(j)[i]));
+            }
+        }
+
+    }
 
 
 }
+
+
