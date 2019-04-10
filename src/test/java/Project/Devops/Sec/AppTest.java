@@ -235,12 +235,12 @@ public class AppTest {
 
 
         assertTrue(panda1.personnalizedIs(0,1,1));
-        assertTrue(panda1.personnalizedIs(1,2,1));
-        assertTrue(panda1.personnalizedIs(2,1,2));
+        assertTrue(panda1.personnalizedIs(1,1,2));
+        assertTrue(panda1.personnalizedIs(2,2,1));
 
         assertTrue(panda1.personnalizedIs(0,1f,1f));
-        assertTrue(panda1.personnalizedIs(1,2f,1f));
-        assertTrue(panda1.personnalizedIs(2,1f,2f));
+        assertTrue(panda1.personnalizedIs(2,2f,1f));
+        assertTrue(panda1.personnalizedIs(1,1f,2f));
 
         assertTrue(panda1.personnalizedIs("Mouataz","Mouataz"));
 
