@@ -108,7 +108,6 @@ public class Pandas {
     public void printBottomTable(){
         int nbStartingIndexOfPrintedLines = this.nbLines - this.nbLines/10;
         if (nbStartingIndexOfPrintedLines < 1 ) nbStartingIndexOfPrintedLines = this.nbLines;
-
         for (int i = nbStartingIndexOfPrintedLines;i<this.nbLines;i++){
             System.out.print(i +":");
             for (int j=0; j<this.nbColumns;j++){
