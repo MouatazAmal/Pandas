@@ -1,7 +1,7 @@
 
-Pour constuire et compiler le projet : mvn package
-Pour lancer les test : mvn test
-Pour exécuter : java -cp target/Pandas-1.0-SNAPSHOT.jar Project.Devops.Sec.App
+Pour constuire et compiler le projet : mvn package  
+Pour lancer les test : mvn test  
+Pour exécuter : java -cp target/Pandas-1.0-SNAPSHOT.jar Project.Devops.Sec.App  
 
 
 # DEVOPS project
