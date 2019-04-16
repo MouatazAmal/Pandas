@@ -1,9 +1,8 @@
 package Project.Devops.Sec;
 
 import java.lang.String;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.NoSuchElementException;
+import java.util.*;
+import java.util.concurrent.Callable;
 
 public class Pandas {
 
@@ -348,6 +347,74 @@ public class Pandas {
         return x.equals(y);
     }
 
+    public static String[] merge(String o, String... arr) {
+        String[] newArray = new String[arr.length + 1];
+        newArray[0] = o;
+        System.arraycopy(arr, 0, newArray, 1, arr.length);
 
+        return newArray;
+    }
+
+
+    public HashMap<String,ArrayList<String[]>> groupBy(String keyLabel, String... labels) throws Exception {
+
+        HashMap<String,ArrayList<String[]>> subset = new HashMap<>();
+
+        if (!this.containsLabel(keyLabel)) throw new Exception("Not found Label");
+        for (String lbl : labels){
+            if (!this.containsLabel(lbl)) throw new Exception("Not found Label");
+            if (this.getColumnsType().get(lbl).equals("String")) throw new Exception("Can't execute the group by");
+        }
+
+
+        String[] merge =  merge(keyLabel,labels);
+        ArrayList<String[]> df = this.selectDataframe(merge);
+
+
+
+        for (String[] st : this.dataFrames){
+            String label = st[0];
+            ArrayList<String[]> list = new ArrayList<>();
+
+            for (String[] st2 : this.dataFrames){
+                if (st2[0].equals(label)) list.add(st2);
+            }
+
+            subset.put(label, list);
+
+        }
+
+
+        return subset;
+    }
+
+    public HashMap<String,ArrayList<String>> aggregate(int functionType, HashMap<String,ArrayList<String[]>> groupByReturn){
+
+        ArrayList<String> list =  new ArrayList<>();
+        HashMap<String,ArrayList<String>> aggregateValue = new HashMap<>();
+        /*
+        - 0 pour la somme
+        - 1 pour la moyenne.
+         */
+
+
+        switch (functionType){
+            case 0 :
+                for (Map.Entry<String,ArrayList<String[]>> t : groupByReturn.entrySet()){
+                    Float sum = 0f;
+                    for (String[] g : t.getValue()){
+                        for (int i = 1;i<g.length;i++) {
+                            sum = sum + Float.parseFloat(g[i]);
+                        }
+                        list.add(sum.toString());
+                    }
+
+                    aggregateValue.put(t.getKey(),list);
+                }
+                break;
+        }
+
+        return null;
+    }
 
 }
