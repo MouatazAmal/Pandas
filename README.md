@@ -6,9 +6,9 @@ Pour exécuter : java -cp target/Pandas-1.0-SNAPSHOT.jar Project.Devops.Sec.App
 
 # DEVOPS project
 
-AMAL Mouataz : mouataz.amal@gmail.com
-ANASSE anouar : anasse.anouar@gmail.com
-BELHADJI Anis : anis_belahadji@yahoo.fr
+AMAL Mouataz : mouataz.amal@gmail.com  
+ANASSE anouar : anasse.anouar@gmail.com  
+BELHADJI Anis : anis_belahadji@yahoo.fr  
 
 Underground Resistance est une bibliothèque que nous avons réalisé et qui fournit de multiples services :
 
@@ -45,8 +45,8 @@ Pour conclure ses outils nous ont permis de faciliter les tâches auxiliaires à
 
 
 #NB :
-Couverture du code :
-1.La classe App n'est pas couverte car cette dernière représente le main de notre application, et nous l'avons pas utilisé.
-2. Les exceptions lancé lors de l'éxécution des test sont des exceptions attendu car nous testons des cas où l'application devrait refusé.
+Couverture du code :  
+1.La classe App n'est pas couverte car cette dernière représente le main de notre application, et nous l'avons pas utilisé.  
+2. Les exceptions lancé lors de l'éxécution des test sont des exceptions attendu car nous testons des cas où l'application devrait refusé.  
 
 
