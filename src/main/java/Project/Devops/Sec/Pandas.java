@@ -372,8 +372,9 @@ public class Pandas {
 
 
 
-        for (String[] st : this.dataFrames){
-            String label = st[0];
+        for (int i = 1;i<this.dataFrames.size();i++) {
+
+            String label = this.dataFrames.get(i)[0];
             ArrayList<String[]> list = new ArrayList<>();
 
             for (String[] st2 : this.dataFrames){
@@ -388,10 +389,10 @@ public class Pandas {
         return subset;
     }
 
-    public HashMap<String,ArrayList<String>> aggregate(int functionType, HashMap<String,ArrayList<String[]>> groupByReturn){
+    public HashMap<String,ArrayList<Float>> aggregate(int functionType, HashMap<String,ArrayList<String[]>> groupByReturn){
 
         ArrayList<String> list =  new ArrayList<>();
-        HashMap<String,ArrayList<String>> aggregateValue = new HashMap<>();
+        HashMap<String,ArrayList<Float>> aggregateValue = new HashMap<>();
         /*
         - 0 pour la somme
         - 1 pour la moyenne.
@@ -401,20 +402,45 @@ public class Pandas {
         switch (functionType){
             case 0 :
                 for (Map.Entry<String,ArrayList<String[]>> t : groupByReturn.entrySet()){
-                    Float sum = 0f;
+                    ArrayList<Float> values = new ArrayList<Float>();
                     for (String[] g : t.getValue()){
                         for (int i = 1;i<g.length;i++) {
-                            sum = sum + Float.parseFloat(g[i]);
+                            if ( i-1 >= values.size()){
+                                values.add(Float.parseFloat(g[i]));
+                            }else {
+                                values.set(i-1,values.get(i-1) + Float.parseFloat(g[i]));
+                            }
+
                         }
-                        list.add(sum.toString());
                     }
 
-                    aggregateValue.put(t.getKey(),list);
+                    aggregateValue.put(t.getKey(),values);
                 }
                 break;
+            default :
+                for (Map.Entry<String,ArrayList<String[]>> t : groupByReturn.entrySet()){
+                    ArrayList<Float> values = new ArrayList<Float>();
+                    for (String[] g : t.getValue()){
+                        for (int i = 1;i<g.length;i++) {
+                            if ( i-1 >= values.size()){
+                                values.add(Float.parseFloat(g[i]));
+                            }else {
+                                values.set(i-1,values.get(i-1) + Float.parseFloat(g[i]));
+                            }
+
+                        }
+                    }
+
+                    for (int i = 0;i<values.size();i++){
+                        values.set(i,values.get(i)/t.getValue().size());
+                    }
+                    aggregateValue.put(t.getKey(),values);
+                }
+                break;
+
         }
 
-        return null;
+        return aggregateValue;
     }
 
 }

@@ -351,6 +351,51 @@ public class AppTest {
         }
 
     }
+
+
+    @Test
+    public void groupByTest() {
+        Pandas pandaMétéo = new Pandas("./rsc/météoJuin.csv");
+        try {
+
+            HashMap< String, ArrayList<Float>> actualOutput = pandaMétéo.aggregate(0, pandaMétéo.groupBy("Column 1", "Column 2"));
+
+            HashMap< String, ArrayList<Float>> expectedOutput = new HashMap<>();
+            ArrayList<Float> arr = new ArrayList<>();
+            arr.add(47f);
+            expectedOutput.put("lundi",arr);
+
+            ArrayList<Float> arr2 = new ArrayList<>();
+
+            arr2.add(48f);
+
+            expectedOutput.put("mardi",arr2);
+
+            assertEquals(expectedOutput,actualOutput);
+
+
+            HashMap< String, ArrayList<Float>> actualOutput2 = pandaMétéo.aggregate(1, pandaMétéo.groupBy("Column 1", "Column 2"));
+
+            HashMap< String, ArrayList<Float>> expectedOutput2 = new HashMap<>();
+            ArrayList<Float> arr3 = new ArrayList<>();
+            arr3.add(23.5f);
+            expectedOutput2.put("lundi",arr3);
+
+            ArrayList<Float> arr4 = new ArrayList<>();
+
+            arr4.add(24f);
+
+            expectedOutput2.put("mardi",arr4);
+
+            assertEquals(actualOutput2,expectedOutput2);
+
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
 
 
