@@ -1,4 +1,3 @@
-TODO
 
 On suppose que y'a pas de valeurs nulle, toutes les colonnes sont rempli, string int float.
 
@@ -52,5 +51,6 @@ Pour conclure ses outils nous ont permis de faciliter les tâches auxiliaires à
 #NB :
 Couverture du code :
 1.La classe App n'est pas couverte car cette dernière représente le main de notre application, et nous l'avons pas utilisé.
-2.
+2. Les exceptions lancé lors de l'éxécution des test sont des exceptions attendu car nous testons des cas où l'application ne devrait pas marché.
+3.
 
