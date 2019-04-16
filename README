@@ -46,6 +46,9 @@ Pour conclure ses outils nous ont permis de faciliter les tâches auxiliaires à
 
 
 
+
+
+
 #NB :
 Couverture du code :
 1.La classe App n'est pas couverte car cette dernière représente le main de notre application, et nous l'avons pas utilisé.
